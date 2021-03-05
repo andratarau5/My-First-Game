@@ -4,10 +4,11 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.util.Random;
 
-import com.an.neon.framework.GameObject;
+import com.an.neon.framework.KeyInput;
 import com.an.neon.framework.ObjectId;
-import com.an.neon.objects.Test;
+import com.an.neon.objects.Player;
 
 public class Game extends Canvas implements Runnable{
 
@@ -16,18 +17,23 @@ public class Game extends Canvas implements Runnable{
 
 	private boolean running = false;
 	private Thread thread;
+	public static int WIDTH, HEIGHT;
 	
 	//Object
 	Handler handler;
+	Random rand = new Random();
 	
 	private void init() {
+		WIDTH = getWidth();
+		HEIGHT = getHeight();
 		handler = new Handler();
-		handler.addObject(new Test(100,100,ObjectId.Test));
-		
+		handler.addObject(new Player(100,100,handler,ObjectId.Player));
+		handler.createLevel();
+		this.addKeyListener(new KeyInput(handler));
 	}
 	
 	
-	public synchronized void start() { //synchronized when using thread
+	public synchronized void start() { //using synchronized when using thread
 		if(running)    //fail safe method
 			return;
 		
