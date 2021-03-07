@@ -10,6 +10,7 @@ import java.util.Random;
 
 import com.an.neon.framework.KeyInput;
 import com.an.neon.framework.ObjectId;
+import com.an.neon.framework.Texture;
 import com.an.neon.objects.Block;
 import com.an.neon.objects.Player;
 
@@ -25,11 +26,14 @@ public class Game extends Canvas implements Runnable {
 	// Object
 	Handler handler;
 	Camera cam;
+	static Texture tex;
 	Random rand = new Random();
 
 	private void init() {
 		WIDTH = getWidth();
 		HEIGHT = getHeight();
+
+		tex = new Texture();
 
 		BufferedImageLoader loader = new BufferedImageLoader();
 		level = loader.loadImage("/level.png"); // loading the level
@@ -132,11 +136,17 @@ public class Game extends Canvas implements Runnable {
 				int blue = (pixel) & 0xff;
 
 				if (red == 255 && green == 255 & blue == 255)
-					handler.addObject(new Block(xx * 32, yy * 32, ObjectId.Block));
+					handler.addObject(new Block(xx * 32, yy * 32, 0, ObjectId.Block));
+				if (red == 128 && green == 128 & blue == 128)
+					handler.addObject(new Block(xx * 32, yy * 32, 1, ObjectId.Block));
 				if (red == 0 && green == 0 & blue == 255)
-					handler.addObject(new Player(xx * 32, yy * 32,handler,ObjectId.Player));
+					handler.addObject(new Player(xx * 32, yy * 32, handler, ObjectId.Player));
 			}
 		}
+	}
+
+	public static Texture getInstance() {
+		return tex;
 	}
 
 	public static void main(String args[]) {
