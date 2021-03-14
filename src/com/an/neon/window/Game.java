@@ -21,7 +21,7 @@ public class Game extends Canvas implements Runnable {
 	private boolean running = false;
 	private Thread thread;
 	public static int WIDTH, HEIGHT;
-	private BufferedImage level = null;
+	private BufferedImage level = null, clouds=null;
 
 	// Object
 	Handler handler;
@@ -37,6 +37,7 @@ public class Game extends Canvas implements Runnable {
 
 		BufferedImageLoader loader = new BufferedImageLoader();
 		level = loader.loadImage("/level.png"); // loading the level
+		clouds = loader.loadImage("/bkg_clouds.png"); //loading background
 
 		handler = new Handler();
 		cam = new Camera(0, 0);
@@ -111,9 +112,12 @@ public class Game extends Canvas implements Runnable {
 		///////////////////////////////////
 		// Draw here
 
-		g.setColor(Color.black);
+		g.setColor(new Color(25,191,224));
 		g.fillRect(0, 0, getWidth(), getHeight());
+		
 		g2d.translate(cam.getX(), cam.getY()); // begin of cam
+		for(int xx=0;xx<clouds.getWidth()*5;xx+=clouds.getWidth())
+			g.drawImage(clouds,xx,50,this);
 		handler.render(g);
 		g2d.translate(-cam.getX(), -cam.getY()); // end of cam
 
